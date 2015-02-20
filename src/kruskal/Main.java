@@ -4,33 +4,37 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-        int TAM = 10;
+        int TAM = 12;
         int maxAristas = 50;
         Grafo grafo = new Grafo(TAM,maxAristas);
         Arista[] aristas = grafo.getAristas();
         EstructuraParticion estructuraParticion = new EstructuraParticion(grafo);
         Kruskal kruskals = new Kruskal(grafo,estructuraParticion, aristas);
-        kruskals.run();
-        Arista[] ruta = kruskals.getPath();
-        
-        
+        int error = kruskals.run();
+        Arista[] arbolOptimo = kruskals.getOptimalTree();
         //PRUEBAS
+        System.out.println("Error: " + error);
         System.out.println("Inicio de las pruebas");
         System.out.println(grafo);
         for (Arista arista : aristas) {
             System.out.println(arista);
-        }    
-        System.out.println("es conexo grafo: "+grafo.esConexo());
-        System.out.println("La ruta optima obtenida es "+ Arrays.toString(ruta));
-//        int[][] otraMatriz = new int[][]{{1,1,1,-1},{1,1,1,-1},{1,1,1,-1},{-1,-1,-1,-1}};
-//        Grafo otroGrafo = new Grafo(otraMatriz);
-//        System.out.println("otroGrafo :\n"+otroGrafo);
-//        System.out.println("es conexo otroGrafo: "+ otroGrafo.esConexo());
-        Grafo grafoRuta = new Grafo(ruta);
-        System.out.println("grafoRuta :\n"+grafoRuta);
-        System.out.println("es conexo ruta: "+ grafoRuta.esConexo());
+        }
+        for (Arista arbolOptimo1 : arbolOptimo) {
+            System.out.println(arbolOptimo1);
+        }
+        Grafo grafoArbol = new Grafo(arbolOptimo);
+        System.out.println("grafoArbol :\n"+grafoArbol);
+        System.out.println("El grafo de entrada "+(grafo.esConexo()?"es":"no es")+" conexo");
+        if(!grafo.esConexo()) return;
+        System.out.println("El árbol óptimo obtenido es "+ Arrays.toString(arbolOptimo));
+        System.out.println("Es conexo arbol: "+ grafoArbol.esConexo());
         System.out.println("Peso total grafo:  "+grafo.getPesoTotal());
-        System.out.println("Peso minimo grafo (n menores aristas) :" + grafo.getPesoMinimo());
-        System.out.println("Peso total grafoRuta:  "+grafoRuta.getPesoTotal());
+        System.out.println("Peso minimo arbol (n menores aristas del grafo) :" + grafo.getPesoMinimo());
+        System.out.println("Peso maximo arbol (n mayores aristas del grafo) :" + grafo.getPesoMaximo());
+        System.out.println("Peso total arbol:  "+grafoArbol.getPesoTotal());
+        System.out.println("El grafo tiene ciclos: "+grafo.tieneCiclos());
+        System.out.println("El árbol tiene ciclos: "+grafoArbol.tieneCiclos());
+        System.out.println("El árbol óptimo está contenido dentro del grafo: "+grafo.contiene(grafoArbol));
+        System.out.println("El grafo de entrada es su propio árbol óptimo: "+ (grafo.contiene(grafoArbol)&&grafoArbol.contiene(grafo)));
     }
 }

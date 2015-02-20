@@ -15,8 +15,11 @@ public class Kruskal {
         this.rutaOptima = new Arista[grafo.getSize() -1];
     }
     
-    public void run(){
-        if(!grafo.esConexo()) return;
+    public int run(){
+        if(!grafo.esConexo()) {
+            rutaOptima = new Arista[]{new Arista(0,0,-2)};
+            return -1;
+        }
         int u,v,raizU,raizV,i = 0;
         do {
            //System.out.println("numaristas :" + numAristas +",i :" + i);
@@ -32,9 +35,10 @@ public class Kruskal {
            i++;
         }
         while (numAristas < grafo.getSize()-1);
+        return 0;
     }
    
-    public Arista[] getPath(){
+    public Arista[] getOptimalTree(){
         return rutaOptima;
     }
 
